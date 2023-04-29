@@ -17,15 +17,11 @@ include(cmake/Git.cmake)
 ### SETTINGS ###
 
 # add all headers (.h, .hpp) to this
-set(PRJ_HEADERS )
+set(PRJ_HEADERS include/helix/Window.h)
 # add all source files (.cpp) to this, except the one with main()
-set(PRJ_SOURCES )
-# set the source file containing main()
-set(PRJ_MAIN src/main.cpp)
-# set the source file containing the test's main
-set(PRJ_TEST_MAIN tests/test_main.cpp)
+set(PRJ_SOURCES src/Window.cpp)
 # set include paths not part of libraries
-set(PRJ_INCLUDE_DIRS )
+set(PRJ_INCLUDE_DIRS include/helix)
 # set compile features (e.g. standard version)
 set(PRJ_COMPILE_FEATURES cxx_std_20)
 # set #defines (test enable/disable not included here)
@@ -76,7 +72,8 @@ set(PRJ_DEFINITIONS ${PRJ_DEFINITIONS}
 )
 
 
-add_library(${PROJECT_NAME} SHARED ${PRJ_HEADERS} ${PRJ_SOURCES} ${PRJ_MAIN})
+add_library(${PROJECT_NAME} STATIC ${PRJ_HEADERS} ${PRJ_SOURCES} ${PRJ_MAIN})
+target_include_directories(${PROJECT_NAME} PUBLIC ${PRJ_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${PRJ_LIBRARIES})
 target_compile_features(${PROJECT_NAME} PRIVATE ${PRJ_COMPILE_FEATURES})
 

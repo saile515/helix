@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 include(cmake/Vcpkg.cmake) # needs to happen before project()
 
 project(
-    "MY_PROJECT" # replace this
-    VERSION 0.1.0
+    "helix"
+    VERSION 0.0.1
     LANGUAGES CXX
 )
 
@@ -33,16 +33,11 @@ set(PRJ_DEFINITIONS )
 # add all libraries used by the project (WARNING: also set them in vcpkg.json!)
 set(PRJ_LIBRARIES 
     fmt::fmt
-    doctest::doctest
     Threads::Threads
-    spdlog::spdlog
 )
 
 # add dependency find_package calls and similar here
 find_package(fmt CONFIG REQUIRED)
-find_package(doctest CONFIG REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
-
 # to enable multithreading and the Threads::Threads dependency
 include(FindThreads)
 
@@ -81,23 +76,9 @@ set(PRJ_DEFINITIONS ${PRJ_DEFINITIONS}
 )
 
 
-add_executable(${PROJECT_NAME} ${PRJ_HEADERS} ${PRJ_SOURCES} ${PRJ_MAIN})
+add_library(${PROJECT_NAME} SHARED ${PRJ_HEADERS} ${PRJ_SOURCES} ${PRJ_MAIN})
 target_link_libraries(${PROJECT_NAME} ${PRJ_LIBRARIES})
 target_compile_features(${PROJECT_NAME} PRIVATE ${PRJ_COMPILE_FEATURES})
-target_compile_definitions(${PROJECT_NAME} PRIVATE ${PRJ_DEFINITIONS} ${PRJ_WARNINGS}
-    DOCTEST_CONFIG_DISABLE # disables all test code in the final executable
-)
 
 # setup all warnings (from cmake/CompilerWarnings.cmake)
 set_project_warnings(${PROJECT_NAME})
-
-if(${PROJECT_NAME}_ENABLE_UNIT_TESTING)
-    message(STATUS "Unit tests are enabled and will be built as '${PROJECT_NAME}-tests'")
-    add_executable(${PROJECT_NAME}-tests ${PRJ_HEADERS} ${PRJ_SOURCES} ${PRJ_TEST_MAIN})
-    target_link_libraries(${PROJECT_NAME}-tests ${PRJ_LIBRARIES})
-    target_compile_features(${PROJECT_NAME}-tests PRIVATE ${PRJ_COMPILE_FEATURES})
-    target_compile_definitions(${PROJECT_NAME}-tests PRIVATE ${PRJ_DEFINITIONS} ${PRJ_WARNINGS})
-    set_project_warnings(${PROJECT_NAME}-tests)
-endif()
-
-

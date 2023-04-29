@@ -1,2 +1,2 @@
-# 2d-engine
-Learning to do the things
+# Helix
+2D game engine written in C++.

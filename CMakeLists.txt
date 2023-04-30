@@ -29,11 +29,15 @@ set(PRJ_DEFINITIONS )
 # add all libraries used by the project (WARNING: also set them in vcpkg.json!)
 set(PRJ_LIBRARIES 
     fmt::fmt
+    glfw
+    GLEW::GLEW
     Threads::Threads
 )
 
 # add dependency find_package calls and similar here
 find_package(fmt CONFIG REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
+find_package(GLEW CONFIG REQUIRED)
 # to enable multithreading and the Threads::Threads dependency
 include(FindThreads)
 
@@ -72,7 +76,7 @@ set(PRJ_DEFINITIONS ${PRJ_DEFINITIONS}
 )
 
 
-add_library(${PROJECT_NAME} STATIC ${PRJ_HEADERS} ${PRJ_SOURCES} ${PRJ_MAIN})
+add_library(${PROJECT_NAME} SHARED ${PRJ_HEADERS} ${PRJ_SOURCES} ${PRJ_MAIN})
 target_include_directories(${PROJECT_NAME} PUBLIC ${PRJ_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${PRJ_LIBRARIES})
 target_compile_features(${PROJECT_NAME} PRIVATE ${PRJ_COMPILE_FEATURES})

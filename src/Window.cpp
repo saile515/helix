@@ -56,6 +56,14 @@ int Window::initialize()
 
     glfwMakeContextCurrent(window_);
 
+    glfwSetWindowUserPointer(window_, this);
+    glfwSetWindowSizeCallback(window_, [](GLFWwindow* window, int width, int height) {
+        Window* this_ = (Window*)glfwGetWindowUserPointer(window);
+        this_->width_ = width;
+        this_->height_ = height;
+        glViewport(0, 0, width, height);
+    });
+
     GLenum err = glewInit();
     if (GLEW_OK != err) {
         return -1;
